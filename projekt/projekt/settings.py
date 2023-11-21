@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'managementsystem',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -74,11 +76,24 @@ WSGI_APPLICATION = 'projekt.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': 'wwwprojekt',
+
+        'USER': 'postgres',
+
+        'PASSWORD': 'postgre',
+
+        'HOST': '127.0.0.1',
+
+        'PORT': '5432',
+
     }
 }
+
 
 
 # Password validation
