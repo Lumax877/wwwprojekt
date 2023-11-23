@@ -22,7 +22,7 @@ class Projekt(models.Model):
 class Zadanie(models.Model):
     tytul = models.CharField(max_length=100)
     opis = models.TextField()
-    projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE)
+    projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE, related_name='zadania')
     data_rozpoczecia = models.DateField()
     termin_wykonania = models.DateField()
     priorytet = models.CharField(max_length=50, choices=[('Wysoki', 'Wysoki'), ('Średni', 'Średni'), ('Niski', 'Niski')])
