@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import home, CustomLoginView, CustomLogoutView, AdminLoginView, admin_home
 from .views import (
     ProjektListCreateView, ProjektDetailView,
     ZadanieListCreateView, ZadanieDetailView,
@@ -22,4 +23,11 @@ urlpatterns = [
 
     path('przypisz-zadanie/<int:pk>', PrzypiszZadanieUzytkownikowiView.as_view(), name='przypisz-zadanie'),
     path('moje-zadania/', PobierzPrzypisaneZadaniaUzytkownikaView.as_view(), name='moje-zadania'),
+
+    path('home/', home, name='home'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+
+    path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
+    path('admin/home/', admin_home, name='admin-home'),
 ]

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Projekt, Profil, Zespol, Zadanie
 
+
 class ZespolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Zespol
@@ -46,22 +47,15 @@ class ProfilSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ZadanieSerializer(serializers.ModelSerializer):
-    przypisany_uzytkownik = ProfilSerializer(read_only=True)
+    przypisany_uzytkownik = serializers.CharField(source='przypisany_uzytkownik.username', read_only=True)
 
     class Meta:
         model = Zadanie
         fields = '__all__'
 
     def create(self, validated_data):
-        przypisany_uzytkownik_data = validated_data.pop('przypisany_uzytkownik', None)
-        zadanie = Zadanie.objects.create(**validated_data)
+        return Zadanie.objects.create(**validated_data)
 
-        if przypisany_uzytkownik_data:
-            przypisany_uzytkownik, created = Profil.objects.get_or_create(**przypisany_uzytkownik_data)
-            zadanie.przypisany_uzytkownik = przypisany_uzytkownik
-            zadanie.save()
-
-        return zadanie
 
     def update(self, instance, validated_data):
         instance.tytul = validated_data.get('tytul', instance.tytul)
@@ -71,12 +65,6 @@ class ZadanieSerializer(serializers.ModelSerializer):
         instance.termin_wykonania = validated_data.get('termin_wykonania', instance.termin_wykonania)
         instance.priorytet = validated_data.get('priorytet', instance.priorytet)
         instance.status = validated_data.get('status', instance.status)
-
-        przypisany_uzytkownik_data = validated_data.get('przypisany_uzytkownik', None)
-        if przypisany_uzytkownik_data:
-            przypisany_uzytkownik, created = Profil.objects.get_or_create(**przypisany_uzytkownik_data)
-            instance.przypisany_uzytkownik = przypisany_uzytkownik
-
         instance.save()
         return instance
 

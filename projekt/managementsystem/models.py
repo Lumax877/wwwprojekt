@@ -33,7 +33,7 @@ class Zadanie(models.Model):
         return self.tytul
 
 class Profil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profil')
     zespoly = models.ManyToManyField(Zespol, blank=True)
 
     def __str__(self):
