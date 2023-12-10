@@ -5,7 +5,8 @@ from .views import (
     ZadanieListCreateView, ZadanieDetailView,
     ZespolListCreateView, ZespolDetailView,
     ProfilListCreateView, ProfilDetailView,
-    PrzypiszZadanieUzytkownikowiView, PobierzPrzypisaneZadaniaUzytkownikaView
+    PrzypiszZadanieUzytkownikowiView, PobierzPrzypisaneZadaniaUzytkownikaView,
+    register, ZadanieChangeStatus
 )
 
 urlpatterns = [
@@ -23,6 +24,7 @@ urlpatterns = [
 
     path('przypisz-zadanie/<int:pk>', PrzypiszZadanieUzytkownikowiView.as_view(), name='przypisz-zadanie'),
     path('moje-zadania/', PobierzPrzypisaneZadaniaUzytkownikaView.as_view(), name='moje-zadania'),
+    path('zmien-status/<int:pk>', ZadanieChangeStatus.as_view(), name='zmien-status'),
 
     path('home/', home, name='home'),
     path('login/', CustomLoginView.as_view(), name='login'),
@@ -30,4 +32,6 @@ urlpatterns = [
 
     path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
     path('admin/home/', admin_home, name='admin-home'),
+
+    path('register/', register, name='register'),
 ]
