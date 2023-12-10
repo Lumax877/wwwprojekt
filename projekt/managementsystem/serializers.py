@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Projekt, Profil, Zespol, Zadanie
-
+from django.contrib.auth.models import User
 
 class ZespolSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,7 +22,7 @@ class ProjektSerializer(serializers.ModelSerializer):
             zespol, created = Zespol.objects.get_or_create(**zespol_data)
             projekt.zespoly.add(zespol)
 
-            return projekt
+        return projekt
 
     def update(self, instance, validated_data):
         instance.nazwa = validated_data.get('nazwa', instance.nazwa)
@@ -47,7 +47,10 @@ class ProfilSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ZadanieSerializer(serializers.ModelSerializer):
-    przypisany_uzytkownik = serializers.CharField(source='przypisany_uzytkownik.username', read_only=True)
+    przypisany_uzytkownik = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        required=False,
+    )
 
     class Meta:
         model = Zadanie
@@ -65,8 +68,14 @@ class ZadanieSerializer(serializers.ModelSerializer):
         instance.termin_wykonania = validated_data.get('termin_wykonania', instance.termin_wykonania)
         instance.priorytet = validated_data.get('priorytet', instance.priorytet)
         instance.status = validated_data.get('status', instance.status)
+        instance.przypisany_uzytkownik = validated_data.get('przypisany_uzytkownik', instance.przypisany_uzytkownik)
         instance.save()
         return instance
+
+class ZadanieAssignedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Zadanie
+        fields = ['status']
 
 
 
